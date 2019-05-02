@@ -32,6 +32,7 @@ public class ServerSock extends WindowAdapter implements ActionListener{
 	private static final String endButton = "Pause";
 	private static final String reStartButton = "Restart";
         private static final String folderSelectButton = "folder";
+        private static final String compileButton = "compile root";
 	
 	private RequestsHandler requests;
         
@@ -58,17 +59,6 @@ public class ServerSock extends WindowAdapter implements ActionListener{
 	public void startServer(){ createGUI();}
 	private void startButton() throws IOException{
             Log.i("start button","called");
-            fileChoose.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-                fileChoose.setCurrentDirectory(new java.io.File("."));
-                fileChoose.setDialogTitle("select root directory");
-                int returnVal = fileChoose.showOpenDialog(frame);
-                    if (returnVal == JFileChooser.APPROVE_OPTION) {
-                        requests.preProcess(fileChoose.getSelectedFile());
-                    } 
-                    else{
-                        Log.i("no file choosen", "choose a root directory to continue");
-                        return;
-                    }
             
 		if(http == null){
 			http = new Http(requests);
@@ -86,6 +76,24 @@ public class ServerSock extends WindowAdapter implements ActionListener{
                 
                 
 		
+	}
+	private void compileButton(){
+		
+            fileChoose.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                fileChoose.setCurrentDirectory(new java.io.File("."));
+                fileChoose.setDialogTitle("select root directory");
+                int returnVal = fileChoose.showOpenDialog(frame);
+                    if (returnVal == JFileChooser.APPROVE_OPTION) {
+			    new Thread( new Runnable(){
+				    public void run(){
+				  	requests.preProcess(fileChoose.getSelectedFile());
+				    }
+			    }).run();
+                    } 
+                    else{
+                        Log.i("no file choosen", "choose a root directory to continue");
+                        return;
+                    }
 	}
 	private void stopButton() throws IOException{
 		System.out.println("stop button");
