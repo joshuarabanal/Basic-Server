@@ -127,6 +127,10 @@ public class ServerSock extends WindowAdapter implements ActionListener{
 		button.addActionListener(this);
 		frame.getContentPane().add(BorderLayout.WEST, button);
 		
+		button = new JButton(compileButton);
+		button.addActionListener(this);
+		frame.getContentPane().add(BorderLayout.NORTH, button);
+		
 		frame.setSize(200, 200);
 		frame.setVisible(true);
 	}
@@ -143,6 +147,9 @@ public class ServerSock extends WindowAdapter implements ActionListener{
 			break;
 		case endButton:
 			stopButton();
+			break;
+		case compileButton:
+			compileButton();
 			break;
 		default:
 			System.out.print("unknown command:"+event.getActionCommand());
