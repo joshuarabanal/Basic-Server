@@ -5,6 +5,7 @@ import android.util.Log;
 import basicServer.ProcessRequest;
 import basicServer.RequestsHandler;
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -13,12 +14,15 @@ import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
 
+import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JTextField;
 
 import basicServer.serverSock.Http;
 import basicServer.serverSock.Https;
 import javax.swing.JFileChooser;
+import javax.swing.JFormattedTextField;
 
 
 
@@ -103,10 +107,10 @@ public class ServerSock extends WindowAdapter implements ActionListener{
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.addWindowListener(this);
              
+	
                 
 		JButton button;
                 
-		
 		button = new JButton(folderSelectButton);
 		button.addActionListener(this);
 		//frame.getContentPane().add(BorderLayout.NORTH, button);
@@ -118,6 +122,7 @@ public class ServerSock extends WindowAdapter implements ActionListener{
 		button = new JButton(endButton);
 		button.addActionListener(this);
 		frame.getContentPane().add(BorderLayout.WEST, button);
+		
 		
 		frame.setSize(200, 200);
 		frame.setVisible(true);

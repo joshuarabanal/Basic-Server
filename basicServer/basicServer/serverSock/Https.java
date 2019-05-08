@@ -21,7 +21,6 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLParameters;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
-import joshuarabanal.delete;
 
 public class Https extends Http{
     private String trustStoreDir;
@@ -50,7 +49,7 @@ public class Https extends Http{
                     ssl.setCipherSuites(suites);
                   */
                     
-                    this.serverSock = delete.createSSLContext(trustStoreDir,SSLPasword,portNum);//sslserver;//
+                    //this.serverSock = delete.createSSLContext(trustStoreDir,SSLPasword,portNum);//sslserver;//
 		}
 		start(serverSock);
                 
