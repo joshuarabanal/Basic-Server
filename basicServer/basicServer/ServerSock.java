@@ -17,6 +17,7 @@ import java.net.ServerSocket;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import basicServer.serverSock.Http;
@@ -38,12 +39,12 @@ public class ServerSock extends WindowAdapter implements ActionListener{
         private static final String folderSelectButton = "folder";
         private static final String compileButton = "compile root";
 	
-	private RequestsHandler requests;
+	protected RequestsHandler requests;
         
         private String ssltrustStore;
         private String sslPassword;
-	private Http http;
-	private Https https;
+	protected Http http;
+	protected Https https;
 
 	/**
 	 * 
@@ -55,28 +56,57 @@ public class ServerSock extends WindowAdapter implements ActionListener{
 		
 	}
         public void setSSL( String sslTrustStoreDir, String SSLPassword){
-		this.ssltrustStore = sslTrustStoreDir;
+        		this.ssltrustStore = sslTrustStoreDir;
                 this.sslPassword = SSLPassword;
-            
         }
+    protected Http initializeHTTP(RequestsHandler req) throws IOException {
+			return  new Http(requests);
+    }
+    protected Https initializeHTTPS(RequestsHandler req, String JKSFIlePath, String sslPassword) throws IOException {
+    	if(JKSFIlePath == null || sslPassword == null) { return null; }
+    	return new Https(requests, JKSFIlePath, sslPassword);
+    }
         
 	public void startServer(){ createGUI();}
 	private void startButton() throws IOException{
             Log.i("start button","called");
             
-		if(http == null){
-			http = new Http(requests);
-                        Log.i("initialized http", "initialized http");
-		}
+            
+        //set ssl stuff
+        if(ssltrustStore == null) {
+            //pick ssl jks file
+            fileChoose.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            fileChoose.setCurrentDirectory(new java.io.File("."));
+            fileChoose.setDialogTitle("select JKS Certificate file");
+            int returnVal = fileChoose.showOpenDialog(frame);
+            if (returnVal == JFileChooser.APPROVE_OPTION) { 
+            	File jks = fileChoose.getSelectedFile();
+            	String pass = (String)JOptionPane.showInputDialog(
+                        frame,
+                        "Enter the Password to the JKS certificate file you just selected:",
+                        "Enter Password",
+                        JOptionPane.PLAIN_MESSAGE,
+                        null,
+                        null,
+                        "password");
+            	setSSL(jks.toString(), pass);
+            }
+        }
+            
+
+    	if(http == null){
+    		http = initializeHTTP(requests);
+    	}
 		http.start();
-		if(https == null && ssltrustStore != null){
-                Log.i("https initialize","called");
-			https = new Https(requests, ssltrustStore, sslPassword);
+		
+		if(https == null) {
+	            Log.i("https initialize","called");
+	            https = initializeHTTPS(requests, ssltrustStore, sslPassword);
 		}
 		if(https!=null){
                     Log.i("https start","called");
                     https.start();
-                }
+          }
                 
                 
 		
@@ -103,11 +133,11 @@ public class ServerSock extends WindowAdapter implements ActionListener{
 		System.out.println("stop button");
 		if(http != null){
 			http.stop();
-			http = null;
+			//http = null;
 		}
 		if(https != null){
 			https.stop();
-			https = null;
+			//https = null;
 		}
 	}
 	private void createGUI(){
@@ -131,12 +161,11 @@ public class ServerSock extends WindowAdapter implements ActionListener{
 		button.addActionListener(this);
 		frame.getContentPane().add(BorderLayout.WEST, button);
 		
-<<<<<<< HEAD
-=======
+
 		button = new JButton(compileButton);
 		button.addActionListener(this);
 		frame.getContentPane().add(BorderLayout.NORTH, button);
->>>>>>> refs/remotes/origin/master
+
 		
 		frame.setSize(200, 200);
 		frame.setVisible(true);

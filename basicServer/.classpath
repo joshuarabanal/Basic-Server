@@ -3,6 +3,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path=""/>
 	<classpathentry kind="lib" path="/android convinience library"/>
-	<classpathentry kind="lib" path="C:/Users/Joshua/Documents/eclipse/git/HTML-preprocesor"/>
+	<classpathentry kind="lib" path="/xmlParser"/>
 	<classpathentry kind="output" path=""/>
 </classpath>

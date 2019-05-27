@@ -149,8 +149,14 @@ public static void addMimeType(String extension, String mime){
 	}
 	
 	//http get
+	/**
+	 * this function automatically closes the stream
+	 * @param sock
+	 * @param mimeType
+	 * @param text
+	 * @throws Exception
+	 */
 	public static void httpGetResponse(Request sock, byte[] mimeType, String text)throws Exception{
-		System.out.println("httpGetResponse:"+text);
 		BufferedOutputStream out  = httpGetHeader(text.length(), sock, mimeType);
                 
 		
@@ -164,10 +170,14 @@ public static void addMimeType(String extension, String mime){
 		}
 	}
 	public static void httpGetResponse(Request sock, File f)throws Exception{
+		if(f.isDirectory() && f.exists() && new File(f,"index.html").exists()) {
+			f = new File(f,"index.html");
+		}
+		
 		if(sock.getHeaderByName("If-Modified-Since") != null){
 			OutputStream out = sock.getOut();
 			writeBaseHeader(out, statusNotChanged, null, 0, null, true, false, f.lastModified()+"");
-			
+			Log.i("if modified since", ""+f);
 		}
 		File tempf;
 		System.out.println("httpGetResponse:"+f.toString());
@@ -204,7 +214,11 @@ public static void addMimeType(String extension, String mime){
 			//out = new GZIPOutputStream(out);
 		}
 		else{
-			out = httpGetHeader(f.length(), sock, getMimeType( (f.getName().split("\\."))[1] ) );
+			byte[] mimeType = "file/*".getBytes();
+			if(f.getName().indexOf('.')>=0) {
+				mimeType = getMimeType( (f.getName().split("\\."))[1] );
+			}
+			out = httpGetHeader(f.length(), sock, mimeType );
 		}
 		if(!f.exists()){ HttpHelpers.fileNotFound(sock); return; }
 		

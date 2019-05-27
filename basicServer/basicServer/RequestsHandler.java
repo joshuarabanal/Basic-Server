@@ -3,6 +3,7 @@ import java.io.File;
 import java.net.Socket;
 import java.util.ArrayList;
 import requetsHandler.HandleSingleRequest;
+import basicServer.Request;
 
 
 
@@ -21,7 +22,13 @@ public class RequestsHandler /*implements Runnable*/{
 
         
 	public void addRequest(Socket sock){
-            new Thread(new HandleSingleRequest(new Request(sock),processor)).start();
+            new Thread(
+            		new HandleSingleRequest(
+            				new Request(sock),
+            				processor
+            			)
+            		)
+            .start();
 	}
         
         /** 
