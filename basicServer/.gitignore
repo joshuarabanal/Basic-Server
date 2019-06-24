@@ -3,5 +3,6 @@
 /ProcessRequest.class
 /Request.class
 /RequestsHandler.class
-/Scheduler.class
 /ServerSock.class
+/Scheduler.class
+/ServerSock$1.class
