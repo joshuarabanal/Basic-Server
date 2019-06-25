@@ -2,7 +2,6 @@ package basicServer;
 import java.io.File;
 import java.net.Socket;
 import java.util.ArrayList;
-import requetsHandler.HandleSingleRequest;
 import basicServer.Request;
 
 
@@ -11,6 +10,24 @@ public class RequestsHandler /*implements Runnable*/{
 	//private ArrayList<Request> requests; 
         //private Thread processingThread; 
         ProcessRequest processor; 
+        
+        
+       private class HandleSingleRequest implements Runnable{
+    	   private Request r;
+    	   public HandleSingleRequest(Request r) {
+    		  this.r = r;
+    	   }
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			try {
+				processor.processRequest(r);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+       }
 
 	public RequestsHandler(ProcessRequest pr){
             setRequestProcessor(pr);
@@ -24,8 +41,7 @@ public class RequestsHandler /*implements Runnable*/{
 	public void addRequest(Socket sock){
             new Thread(
             		new HandleSingleRequest(
-            				new Request(sock),
-            				processor
+            				new Request(sock)
             			)
             		)
             .start();

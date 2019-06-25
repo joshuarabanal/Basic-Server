@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import javax.net.ssl.SSLSocket;
 
 
+
 public class Request{
 	
 	public final static String headerCookie = "Cookie";
