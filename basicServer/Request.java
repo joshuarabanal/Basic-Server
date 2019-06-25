@@ -284,7 +284,7 @@ public class Request{
 			URL = headPieces[1].trim();
 			if(URL.contains("?")) {
 				int queryIndex = URL.indexOf("?");
-				query = URL.substring(queryIndex);
+				query = URL.substring(queryIndex+1);
 				URL = URL.substring(0,  queryIndex);
 			}
 		}
@@ -299,10 +299,30 @@ public class Request{
             }
         }
        
+    public void addCookie(String name, String value) {
+    	for(int i = 0; i<headers.size(); i++){
+    		String header = headers.get(i);
+    		
+			if(header.contains(headerCookie) && header.indexOf(headerCookie) < header.indexOf(':')){
+				if(header.contains("=")) {//if were adding to an existing list
+				headers.set(i, 
+						header + "; "+name+"="+value
+							);
+				}
+				else {
+					headers.set(i, 
+							header + name+"="+value
+								);
+				}
+			}
+		}
+    	
+    }
     public NameValuePairList getCookies() throws IOException {
     	String cookieString = getHeaderByName(headerCookie);
     	if(cookieString == null || cookieString.length() == 0) {
-    		return null;
+    		
+    		return new NameValuePairList();
     	}
     	NameValuePairList retu = new NameValuePairList();
     	String[] cookieArray = cookieString.split(";");
@@ -331,7 +351,17 @@ public class Request{
 					e.printStackTrace();
 				}
             }
-            return "{Request, url:"+URL+", method:"+method+"headers:"+headers+"}\n data:"+data;
+        	String query = null;
+        
+        	try {
+				if(getQuery()!= null) {
+					query = getQuery().toString();
+				}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				Log.e("unable to get query","unable to get Query");
+			}
+            return "{Request, url:"+URL+", query"+query+", method:"+method+"headers:"+headers+"}\n data:"+data;
         }
         public void logValues() {
         	if(headers.size() == 0){

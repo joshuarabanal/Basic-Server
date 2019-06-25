@@ -1,6 +1,8 @@
 package basicServer;
 
 import android.util.Log;
+import xml.NameValuePairList;
+
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -133,20 +135,18 @@ public static void addMimeType(String extension, String mime){
 	 * @param contentLength can be null if not used
 	 * @param cookieNameAndValue can be null if no new cookies
 	 */
-	private static void writeBaseHeader(OutputStream out, byte[] status, byte[] mimeType, long contentLength, String cookieNameAndValue, boolean autoClose, boolean gzip, String cacheId){
+	private static void writeBaseHeader(OutputStream out, byte[] status, byte[] mimeType, long contentLength, ArrayList<Cookie> cookies, boolean autoClose, boolean gzip, String cacheId){
 		try {
 			out.write(statusStart); out.write(status); out.write(ln);
 			out.write(sameOrginHeader); out.write(ln);
 			if(mimeType != null){ out.write(ContentType); out.write(mimeType);out.write(ln);}
 			if(contentLength >-1){ out.write(ContentLength);  out.write(parseLength(contentLength)); out.write(ln); }
-			if(cookieNameAndValue != null){
-				out.write(setCookie);
-				char[] cookie = cookieNameAndValue.toCharArray();
-				byte[] b = new byte[cookie.length];
-				for(int i = 0; i<cookie.length; i++){
-					b[i] = (byte) cookie[i];					
+			if(cookies != null){
+				for(Cookie c: cookies) {
+					out.write(setCookie);
+					out.write(c.toString().getBytes());
+					out.write(ln);
 				}
-				out.write(b); out.write(ln);
 			} 
 			if(gzip){
 				out.write(ContentEncoding_GZIP); out.write(ln);
@@ -176,9 +176,9 @@ public static void addMimeType(String extension, String mime){
 		writeBaseHeader(out, statusSuccess, mimeType, length, null, false, false,null);
 		return out;
 	 }
-	private static BufferedOutputStream httpPostSetCookie(long length, Request sock, byte[] mimeType, String CookieName, String CookieValue)throws Exception{
-		BufferedOutputStream out = sock.getOut();;
-		writeBaseHeader(out, statusSuccess, mimeType,length, CookieName+"="+CookieValue,false, false,null);
+	private static BufferedOutputStream httpPostSetCookie(long length, Request sock, byte[] mimeType, ArrayList<Cookie> cookies)throws Exception{
+		BufferedOutputStream out = sock.getOut();
+		writeBaseHeader(out, statusSuccess, mimeType,length, cookies,false, false,null);
 		return out;
 	}
 	
@@ -300,11 +300,11 @@ public static void addMimeType(String extension, String mime){
 	 * @param CookieName
 	 * @param CookieValue
 	 */
-	public static void httpPostResponse(Request sock, byte[] mimeType, String text, String CookieName, String CookieValue)throws Exception{
+	public static void httpPostResponse(Request sock, byte[] mimeType, String text, ArrayList<Cookie> cookies)throws Exception{
 		System.out.println("httpPostResponse:"+text);
 		BufferedOutputStream out;
-		if(CookieName != null && CookieValue != null){
-			out = httpPostSetCookie((text == null)? -1: text.length(),sock,mimeType,   CookieName,CookieValue);
+		if(cookies!= null && cookies.size()>0){
+			out = httpPostSetCookie((text == null)? -1: text.length(),sock,mimeType,  cookies);
 		}
 		else{
 			out = httpGetHeader((text == null)? -1:text.length(), sock,mimeType);
@@ -314,9 +314,23 @@ public static void addMimeType(String extension, String mime){
 				for(char b: bytes){ out.write(b); }
 			}
 			out.close();
-	
 		
 	}
+	/**
+	 * convinience function for {@link #httpPostResponse(Request, byte[], String, ArrayList)}
+	 * @param sock
+	 * @param mimeType
+	 * @param text
+	 * @param cookiename
+	 * @param cookieValue
+	 * @throws Exception
+	 */
+	public static void httpPostResponse(Request sock, byte[] mimeType, String text, Cookie cookie)throws Exception{
+		ArrayList<Cookie> cookies = new ArrayList<Cookie>();
+		cookies.add(cookie);
+		httpPostResponse( sock,  mimeType,  text, cookies);
+	}
+	
 	/**
 	 * success from appointment 
 	 * @param sock
@@ -331,9 +345,7 @@ public static void addMimeType(String extension, String mime){
 		//out.close();
 		
 	}
-        public static void return200Ok(Request sock, String message){
-            
-        }
+       
 	/**
 	 * for when not loged in or invalid login
 	 * @param sock

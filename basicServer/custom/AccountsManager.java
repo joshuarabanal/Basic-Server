@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
+import basicServer.Cookie;
 import basicServer.HttpHelpers;
 import basicServer.ProcessRequest;
 import basicServer.Request;
@@ -117,7 +118,7 @@ public class AccountsManager {
 		contractorFolder.mkdirs();
 		new File(contractorFolder,customersFolder).mkdirs();
 		new File(contractorFolder,employeesFolder).mkdirs();
-		HttpHelpers.httpPostResponse(sock, HttpHelpers.MimeTxt, cookie, "cookie", cookie);
+		HttpHelpers.httpPostResponse(sock, HttpHelpers.MimeTxt, cookie, new Cookie("cookie", cookie));
 		saveLastMadeId(id, privateDir);
 	}
 
@@ -134,7 +135,7 @@ public class AccountsManager {
 				return;
 			}
 			else{
-				HttpHelpers.httpPostResponse(sock, null, null, "cookie", contractorId+cookieSeparator+new String(id));
+				HttpHelpers.httpPostResponse(sock, null, null, new Cookie("cookie", contractorId+cookieSeparator+new String(id)));
 				saveLastMadeId(id, privateDir+"/"+contractorId);
 			}
 			f = new File(f, new String(id));
@@ -155,7 +156,7 @@ public class AccountsManager {
 			HttpHelpers.httpLoginFailed(sock);
 		}
 		else{
-			HttpHelpers.httpPostResponse(sock, null, null, "cookie", cookie);
+			HttpHelpers.httpPostResponse(sock, null, null, new Cookie("cookie", cookie));
 		}
 		
 	}
