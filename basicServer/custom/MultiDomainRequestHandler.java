@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import android.util.Log;
 import basicServer.ProcessRequest;
 import basicServer.Request;
+import basicServer.Preprocessor.GZipFIles;
 import basicServer.custom.multiDomainRequestsHandler.Domain;
 
 public class MultiDomainRequestHandler implements ProcessRequest {
@@ -62,6 +63,17 @@ public class MultiDomainRequestHandler implements ProcessRequest {
 				for(int i  = 0; i<requestHandlers.size(); i++) {
 					requestHandlers.get(i).getProcessRequest().openCache(new File(file, requestHandlers.get(i).getDefaultDomain()+"/"+file.getName()));
 				}
+	}
+
+	@Override
+	public void setRoot(File root) {
+		// TODO Auto-generated method stub
+		root = new File(root, "publicFilesDirectory");
+		for(int i  = 0; i<requestHandlers.size(); i++) {
+			requestHandlers.get(i).getProcessRequest().setRoot(
+					new File(root, requestHandlers.get(i).getDefaultDomain())
+				);
+		}
 	}
 
 }

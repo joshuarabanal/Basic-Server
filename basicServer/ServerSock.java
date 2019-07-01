@@ -56,6 +56,7 @@ public class ServerSock extends WindowAdapter implements ActionListener{
 	 * @param rootDirectory root directory of server
 	 */
 	public  ServerSock( ProcessRequest pr, File rootDirectory, File cache) {
+		pr.setRoot(rootDirectory);
 		requests = new RequestsHandler(pr);
 		cacheFile = cache;
 		if(cacheFile.exists()) {

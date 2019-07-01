@@ -186,5 +186,10 @@ public class ProxyServer extends RequestsHandler implements ProcessRequest{
 		// TODO Auto-generated method stub
 		
 	}
+	@Override
+	public void setRoot(File root) {
+		// TODO Auto-generated method stub
+		
+	}
     
 }

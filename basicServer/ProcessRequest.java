@@ -12,4 +12,5 @@ public interface ProcessRequest {
     public void preProcess(File folder);
     public void saveState(File file) ;
     public void openCache(File file);
+    public void setRoot(File root);
 }

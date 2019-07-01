@@ -171,6 +171,12 @@ public class MyProcessor implements ProcessRequest {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void setRoot(File root) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 
 

@@ -115,6 +115,9 @@ public static void addMimeType(String extension, String mime){
 	}
 	
 	public static File getFileFromUrl(File rootFolder, String url){
+		if(rootFolder == null) {
+			throw new NullPointerException("root folder is null");
+		}
             return new File(rootFolder, url);
         }
 	
