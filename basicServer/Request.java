@@ -113,10 +113,15 @@ public class Request{
 			for(String s : items) {
 				//Log.i("string item", s);
 				int index = s.indexOf("=");
+				if(index>=0) {
 				nvpl.add(
 						URLDecoder.decode(s.substring(0, index)),
 						URLDecoder.decode(s.substring(index+1))
 					);
+				}
+				else {
+					throw new IndexOutOfBoundsException(s);
+				}
 			}
 			return nvpl;
 		}
@@ -199,7 +204,7 @@ public class Request{
 		
 		for(String header : headers){
 			if(header.contains(name) && header.indexOf(name) < header.indexOf(':')){
-				return header.substring(header.indexOf(':')+1);//header.split(":")[1].trim();
+				return header.substring(header.indexOf(':')+2);//header.split(":")[1].trim();
 			}
 		}
 		
@@ -285,7 +290,7 @@ public class Request{
 			if(URL.contains("?")) {
 				int queryIndex = URL.indexOf("?");
 				query = URL.substring(queryIndex+1);
-				URL = URL.substring(0,  queryIndex);
+				URL = URLDecoder.decode(URL.substring(0,  queryIndex));
 			}
 		}
 		 
@@ -328,16 +333,18 @@ public class Request{
     	String[] cookieArray = cookieString.split(";");
     	for(String cookie : cookieArray) {
     		if(cookie.length() == 0) { continue; }
+    		int indexOfEquals = cookie.indexOf('=');
     		String[] nvp = cookie.split("=");
-    		if(nvp.length ==1) {
-    			retu.add(new Attribute(cookie, null));
-    		}
-    		else if(nvp.length == 2) {
-    			retu.add(new Attribute(nvp[0], nvp[1]));
+    		if(indexOfEquals>0) {
+    			retu.add(
+    					new Attribute(
+    							cookie.substring(0, indexOfEquals), 
+    							cookie.substring(indexOfEquals+1)
+    							)
+    					);
     		}
     		else {
-    			Log.e("cookie", cookie);
-    			throw new IndexOutOfBoundsException("incoorect cookie");
+    			retu.add(new Attribute(cookie, null));
     		}
     	}
 		return retu;

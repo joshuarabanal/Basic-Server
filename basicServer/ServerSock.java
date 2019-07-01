@@ -48,14 +48,19 @@ public class ServerSock extends WindowAdapter implements ActionListener{
         private String sslPassword;
 	protected Http http;
 	protected Https https;
+	private File cacheFile;
 
 	/**
 	 * 
 	 * @param pr
 	 * @param rootDirectory root directory of server
 	 */
-	public  ServerSock( ProcessRequest pr, File rootDirectory) {
+	public  ServerSock( ProcessRequest pr, File rootDirectory, File cache) {
 		requests = new RequestsHandler(pr);
+		cacheFile = cache;
+		if(cacheFile.exists()) {
+			pr.openCache(cacheFile);
+		}
 		
 	}
         public void setSSL( String sslTrustStoreDir, String SSLPassword){
@@ -216,6 +221,7 @@ public class ServerSock extends WindowAdapter implements ActionListener{
 
 	 public void windowClosing(WindowEvent e){	
 		 	try {
+		 		requests.processor.saveState(cacheFile);
 				stopButton();
                                 
 			} catch (IOException e1) {

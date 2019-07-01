@@ -159,6 +159,18 @@ public class MyProcessor implements ProcessRequest {
     public void preProcess(File root) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+	@Override
+	public void saveState(File file) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void openCache(File file) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 
 

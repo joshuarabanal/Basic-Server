@@ -12,6 +12,7 @@ import basicServer.Request;
 import basicServer.RequestsHandler;
 import basicServer.serverSock.Http;
 import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -175,5 +176,15 @@ public class ProxyServer extends RequestsHandler implements ProcessRequest{
             connection.disconnect();
         
     }
+	@Override
+	public void saveState(File file) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void openCache(File file) {
+		// TODO Auto-generated method stub
+		
+	}
     
 }
