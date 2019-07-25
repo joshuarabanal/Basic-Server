@@ -49,10 +49,10 @@ public class Http implements Runnable{
 			
 			while(serverSock != null){
 				sock = serverSock.accept();
+				System.out.println("message added to queue");
 				if(sock != null){
 					requests.addRequest(sock);
 				}
-				System.out.println("message added to queue");
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

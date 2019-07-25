@@ -30,6 +30,7 @@ public class MultiDomainRequestHandler implements ProcessRequest {
 		String possible  = "";
 		for(Domain d: requestHandlers) { possible+=","+d; }
 		Log.e("available domains", possible);
+		Log.i("looking for domain", Host);
 		throw new IndexOutOfBoundsException("invalid domain:"+Host);
 	}
 
@@ -37,7 +38,9 @@ public class MultiDomainRequestHandler implements ProcessRequest {
 	public void preProcess(File folder) {
 		// TODO Auto-generated method stub
 		for(int i  = 0; i<requestHandlers.size(); i++) {
-			requestHandlers.get(i).getProcessRequest().preProcess(new File(folder, requestHandlers.get(i).getDefaultDomain()));
+			File f = new File(folder, requestHandlers.get(i).getDefaultDomain());
+			f.mkdirs();
+			requestHandlers.get(i).getProcessRequest().preProcess(f);
 		}
 		
 	}
@@ -48,9 +51,9 @@ public class MultiDomainRequestHandler implements ProcessRequest {
 		String fileName = "/"+file.getName();
 		file = file.getParentFile();
 		for(int i  = 0; i<requestHandlers.size(); i++) {
-			requestHandlers.get(i).getProcessRequest().saveState(
-					new File(file, requestHandlers.get(i).getDefaultDomain()+file.getName())
-			);
+			File f = new File(file, requestHandlers.get(i).getDefaultDomain()+file.getName());
+			f.mkdirs();
+			requestHandlers.get(i).getProcessRequest().saveState(f);
 		}
 	}
 
@@ -61,7 +64,9 @@ public class MultiDomainRequestHandler implements ProcessRequest {
 				String fileName = file.getName();
 				file = file.getParentFile();
 				for(int i  = 0; i<requestHandlers.size(); i++) {
-					requestHandlers.get(i).getProcessRequest().openCache(new File(file, requestHandlers.get(i).getDefaultDomain()+"/"+file.getName()));
+					File f = new File(file, requestHandlers.get(i).getDefaultDomain()+"/"+file.getName());
+					f.mkdirs();
+					requestHandlers.get(i).getProcessRequest().openCache( f );
 				}
 	}
 
@@ -70,9 +75,9 @@ public class MultiDomainRequestHandler implements ProcessRequest {
 		// TODO Auto-generated method stub
 		root = new File(root, "publicFilesDirectory");
 		for(int i  = 0; i<requestHandlers.size(); i++) {
-			requestHandlers.get(i).getProcessRequest().setRoot(
-					new File(root, requestHandlers.get(i).getDefaultDomain())
-				);
+			File f = new File(root, requestHandlers.get(i).getDefaultDomain());
+			f.mkdirs();
+			requestHandlers.get(i).getProcessRequest().setRoot( f );
 		}
 	}
 

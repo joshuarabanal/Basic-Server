@@ -100,7 +100,7 @@ public class TranslationsBuilder  implements XmlCursor{
                 Translation trans = t.get(tr);
                 for(int i = 0; i<attributes.size(); i++){
                     if(attributes.get(i).getName().equals(trans.attribute)){//if this is the right attribute
-                        ((Attribute)attributes.get(i)).setValue(trans.text);//replace the value
+                        (attributes.get(i)).setValue(trans.text);//replace the value
                     }
                 }
                 if(trans.attribute.equals("innerHTML")){

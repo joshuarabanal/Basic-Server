@@ -34,7 +34,7 @@ public class TunnelConnection {
         //sock = new ServerSocket(port);
         this.url = ""+this.url;
          r.getOut().write("HTTP/1.1 200 OK\r\n\r\n".getBytes());
-         r.getOut().close();
+         //r.getOut().close();
          this.r = r;
          this.port = port;
     }
@@ -45,6 +45,7 @@ public class TunnelConnection {
     public void run() throws Exception{
         if(true){ return; }
         Log.i("tunnel connection", "reading:"+r);
+        r.resetForNextRequest();
         BufferedReader in = null;
         try{
             in = r.getInputStream();
