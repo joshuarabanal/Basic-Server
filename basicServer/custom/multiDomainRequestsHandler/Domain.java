@@ -14,15 +14,15 @@ public class Domain{
 	}
 	public boolean canHandle(String host) {
 		host = host;
-		String log = "";
+		//String log = "";
 		for(String domain: domains) {
 			if(domain.equals(host)) {
 				return true;
 			}
-			log+=", \n'"+domain +"'='"+host+"'=="+domain.equals(host);
+			//log+=", \n'"+domain +"'='"+host+"'=="+domain.equals(host);
 		}
-		Log.i("cannot handle"+host, domains.toString());
-		Log.i("equality:", log);
+		//Log.i("cannot handle"+host, domains.toString());
+		//Log.i("equality:", log);
 		return false;
 	}
 	public ProcessRequest getProcessRequest() { return pr; }

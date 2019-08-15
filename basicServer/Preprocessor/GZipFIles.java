@@ -82,21 +82,35 @@ public static void deleteFolder(File f){
     }
         f.delete();
 }    
-	/**
-	 * attempts to gzip all the files in this directory, if the output gzip is bigger than the original(as in jpeg files) then the gzip attempt is abandoned for that specific file
-	 * @param publicFilesDirectory
-	 */
-	public static void GZipFilesInFolder(File publicFilesDirectory){
-		File[] files = publicFilesDirectory.listFiles();
-		for(File file : files){
-			if(file.isDirectory()){
-				GZipFilesInFolder(file);
-			}
-			else if(file.isFile()){
-				GzipFile(file);
-			}
+/**
+ * attempts to gzip all the files in this directory, if the output gzip is bigger than the original(as in jpeg files) then the gzip attempt is abandoned for that specific file
+ * @param publicFilesDirectory
+ */
+public static void GZipFilesInFolder(File publicFilesDirectory){
+	File[] files = publicFilesDirectory.listFiles();
+	for(File file : files){
+		if(file.isDirectory()){
+			GZipFilesInFolder(file);
+		}
+		else if(file.isFile()){
+			GzipFile(file);
 		}
 	}
+}
+/**
+ * attempts to gzip all the files in this directory, if the output gzip is bigger than the original(as in jpeg files) then the gzip attempt is abandoned for that specific file
+ * @param publicFilesDirectory
+ */
+public static void GZipFilesInFolderInNewThread(File publicFilesDirectory){
+	new Thread(new Runnable(){
+        public void run(){
+            Log.i("gzip dir", "start");
+            long time = System.currentTimeMillis();
+            GZipFIles.GZipFilesInFolder(publicFilesDirectory);
+            Log.i("gzip dir", "lasted:"+((System.currentTimeMillis()-time)/1000f)+" seconds"); 
+        }
+    }).start();
+}
 	private static void GzipFile(File f){
 		if(f.getName().contains(".gz")){ return; }
 		File out = new File(f.getParentFile(), f.getName()+".gz");

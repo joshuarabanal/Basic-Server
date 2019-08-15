@@ -22,6 +22,10 @@ public class MultiDomainRequestHandler implements ProcessRequest {
 	public int processRequest(Request r) throws Exception {
 		// TODO Auto-generated method stub
 		String Host = r.getHeaderByName("Host");
+		if(Host == null || Host.length() == 0) {
+			Log.i("unable to find request domain", r.toString());
+			throw new NullPointerException("null host in request");
+		}
 		for(int i = 0; i<requestHandlers.size(); i++) {
 			if(requestHandlers.get(i).canHandle(Host)) {
 				return requestHandlers.get(i).getProcessRequest().processRequest(r);

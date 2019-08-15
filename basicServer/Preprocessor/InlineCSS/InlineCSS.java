@@ -104,6 +104,25 @@ public class InlineCSS  implements XmlCursor{
         }
     }
 
+    public void deleteCssFiles() {
+    	deleteCssFiles(rootFile);
+    }
+    public static void deleteCssFiles(File rootFile){
+  
+        if(rootFile.isDirectory()){
+            File[] children = rootFile.listFiles();
+            for(int i = 0; i<children.length; i++){
+                deleteCssFiles(children[i]);
+            }
+        }
+        else if(rootFile.getName().contains(".css")){
+            Log.i("deleteing file", rootFile.toString());
+            rootFile.delete();
+        }
+    }
+    
+    
+    //xml parser stuff
     private byte[] b = new byte[1024];
     @Override
     public void newElement(String name, NameValuePairList attributes, boolean autoClose) throws Exception {
