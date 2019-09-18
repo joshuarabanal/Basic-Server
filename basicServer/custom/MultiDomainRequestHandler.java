@@ -41,6 +41,7 @@ public class MultiDomainRequestHandler implements ProcessRequest {
 	@Override
 	public void preProcess(File folder) {
 		// TODO Auto-generated method stub
+		Log.i("preprocess", ""+folder);
 		for(int i  = 0; i<requestHandlers.size(); i++) {
 			File f = new File(folder, requestHandlers.get(i).getDefaultDomain());
 			f.mkdirs();
@@ -68,7 +69,7 @@ public class MultiDomainRequestHandler implements ProcessRequest {
 				String fileName = file.getName();
 				file = file.getParentFile();
 				for(int i  = 0; i<requestHandlers.size(); i++) {
-					File f = new File(file, requestHandlers.get(i).getDefaultDomain()+"/"+file.getName());
+					File f = new File(file,"cache/"+ requestHandlers.get(i).getDefaultDomain()+"/"+file.getName());
 					f.mkdirs();
 					requestHandlers.get(i).getProcessRequest().openCache( f );
 				}
@@ -77,6 +78,7 @@ public class MultiDomainRequestHandler implements ProcessRequest {
 	@Override
 	public void setRoot(File root) {
 		// TODO Auto-generated method stub
+		Log.i("set root", ""+root);
 		root = new File(root, "publicFilesDirectory");
 		for(int i  = 0; i<requestHandlers.size(); i++) {
 			File f = new File(root, requestHandlers.get(i).getDefaultDomain());
