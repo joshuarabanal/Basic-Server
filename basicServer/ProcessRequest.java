@@ -10,7 +10,6 @@ public interface ProcessRequest {
 	public int processRequest(Request r) throws Exception;
 
     public void preProcess(File folder);
-    public void saveState(File file) ;
-    public void openCache(File file);
+    public void saveState() ;
     public void setRoot(File root);
 }

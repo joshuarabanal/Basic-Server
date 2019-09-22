@@ -50,39 +50,36 @@ public class MultiDomainRequestHandler implements ProcessRequest {
 	}
 
 	@Override
-	public void saveState(File file) {
+	public void saveState() {
 		// TODO Auto-generated method stub
-		String fileName = "/"+file.getName();
-		file = file.getParentFile();
 		for(int i  = 0; i<requestHandlers.size(); i++) {
-			File f = new File(file, requestHandlers.get(i).getDefaultDomain()+file.getName());
-			f.mkdirs();
-			requestHandlers.get(i).getProcessRequest().saveState(f);
+			requestHandlers.get(i).getProcessRequest().saveState();
 		}
 	}
-
+/**
 	@Override
 	public void openCache(File file) {
-		// TODO Auto-generated method stub
-		// TODO Auto-generated method stub
-				String fileName = file.getName();
-				file = file.getParentFile();
+		file = new File(file, "cache");
 				for(int i  = 0; i<requestHandlers.size(); i++) {
-					File f = new File(file, requestHandlers.get(i).getDefaultDomain()+"/"+file.getName());
+					File f = new File(file, requestHandlers.get(i).getDefaultDomain());
 					f.mkdirs();
 					requestHandlers.get(i).getProcessRequest().openCache( f );
 				}
 	}
 
+**/
 	@Override
 	public void setRoot(File root) {
 		// TODO Auto-generated method stub
-		root = new File(root, "publicFilesDirectory");
+		root = new File(root, "Domains");
+		
 		for(int i  = 0; i<requestHandlers.size(); i++) {
 			File f = new File(root, requestHandlers.get(i).getDefaultDomain());
 			f.mkdirs();
 			requestHandlers.get(i).getProcessRequest().setRoot( f );
 		}
+		
+		
 	}
 
 }

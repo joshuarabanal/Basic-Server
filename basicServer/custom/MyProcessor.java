@@ -161,16 +161,11 @@ public class MyProcessor implements ProcessRequest {
     }
 
 	@Override
-	public void saveState(File file) {
+	public void saveState() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
-	public void openCache(File file) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public void setRoot(File root) {

@@ -12,10 +12,9 @@ public class run {
 
 		File path = new File(System.getProperty("user.dir"));
 		File srcFolder = new File(path,"src"); srcFolder.mkdirs();
-		File cache = new File(path,"cache"); cache.mkdirs();
 		
 		
-				ServerSock serv = new ServerSock(new ProxyServer(), srcFolder, cache);
+				ServerSock serv = new ServerSock(new ProxyServer(), srcFolder);
 		
 	}
 
