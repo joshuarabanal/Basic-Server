@@ -76,13 +76,8 @@ public class MultiDomainRequestHandler implements ProcessRequest {
 	@Override
 	public void setRoot(File root) {
 		// TODO Auto-generated method stub
-<<<<<<< HEAD
 		root = new File(root, "Domains");
 		
-=======
-		Log.i("set root", ""+root);
-		root = new File(root, "publicFilesDirectory");
->>>>>>> bfcfbd314c1b8957de229564182d54881811d0dc
 		for(int i  = 0; i<requestHandlers.size(); i++) {
 			File f = new File(root, requestHandlers.get(i).getDefaultDomain());
 			f.mkdirs();
