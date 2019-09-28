@@ -147,13 +147,13 @@ public class AccountsManager {
 			
 		}
 		else{//invalid contractor id
-			HttpHelpers.httpLoginFailed(sock);
+			HttpHelpers.httpBadRequest(sock);
 		}
 	}
 	public void login(Request sock, String uName, String Password)throws Exception{
 		String cookie = keys.getContractorId(uName,Password);
 		if(cookie == null){
-			HttpHelpers.httpLoginFailed(sock);
+			HttpHelpers.httpBadRequest(sock);
 		}
 		else{
 			HttpHelpers.httpPostResponse(sock, null, null, new Cookie("cookie", cookie));
@@ -197,7 +197,7 @@ public class AccountsManager {
 			
 		}
 		else{
-			HttpHelpers.httpLoginFailed(sock);
+			HttpHelpers.httpBadRequest(sock);
 		}
 	}
 	

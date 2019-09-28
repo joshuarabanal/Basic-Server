@@ -354,7 +354,7 @@ public static void addMimeType(String extension, String mime){
 	 * @param sock
 	 * @return status code 400
 	 */
-	public static void httpLoginFailed(Request sock)throws Exception{
+	public static void httpBadRequest(Request sock)throws Exception{
 		System.out.println("login failed"); 
 		writeBaseHeader(sock.getOut(), statusBadRequest, null, -1, null, true, false,null);
 		//BufferedOutputStream out = sock.getOut();

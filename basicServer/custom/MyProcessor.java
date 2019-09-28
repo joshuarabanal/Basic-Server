@@ -95,7 +95,7 @@ public class MyProcessor implements ProcessRequest {
 			line = lines[i].split(dataNameValueSplit);
 			if(line[0].equals("data")){
 				String cookie = sock.getHeaderByName(Request.headerCookie);
-				if(cookie == null){ HttpHelpers.httpLoginFailed(sock);  return; }
+				if(cookie == null){ HttpHelpers.httpBadRequest(sock);  return; }
 				accountsManager.newOrder(
 						sock, 
 						line[1],
@@ -125,7 +125,7 @@ public class MyProcessor implements ProcessRequest {
 		}
 		else{
 			System.out.println("could not find headers");
-			HttpHelpers.httpLoginFailed(sock);
+			HttpHelpers.httpBadRequest(sock);
 		}
 		
 	}
@@ -142,7 +142,7 @@ public class MyProcessor implements ProcessRequest {
 			accountsManager.login(sock, uname, password);
 		}
 		else{
-			HttpHelpers.httpLoginFailed(sock);
+			HttpHelpers.httpBadRequest(sock);
 		}
 	}
 	
