@@ -40,33 +40,33 @@ public class Https extends Http{
 
 	public void start() throws IOException{
 		try {
-                    Log.i("starting https","server");
-                    File jks = new File(trustStoreDir);
-                    KeyStore ks = KeyStore.getInstance("PKCS12");
-        	        Log.i("loading keystore", "password:"+SSLPassword+", file:"+jks);
-        	        ks.load(new FileInputStream(jks), SSLPassword.toCharArray());
-        	        KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
-        	        kmf.init(ks, SSLPassword.toCharArray());
+			Log.i("starting https","server");
+            File jks = new File(trustStoreDir);
+            KeyStore ks = KeyStore.getInstance("PKCS12");
+	        Log.i("loading keystore", "password:"+SSLPassword+", file:"+jks);
+	        ks.load(new FileInputStream(jks), SSLPassword.toCharArray());
+	        KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+	        kmf.init(ks, SSLPassword.toCharArray());
 
-        	        SSLContext sc = SSLContext.getInstance("TLS");
-        	        sc.init(kmf.getKeyManagers(), null, null);
+	        SSLContext sc = SSLContext.getInstance("TLS");
+	        sc.init(kmf.getKeyManagers(), null, null);
 
-        	        SSLServerSocketFactory ssf = sc.getServerSocketFactory();
-        	        SSLServerSocket s = (SSLServerSocket) ssf.createServerSocket(portNum);
-        	        
-        	        java.security.cert.Certificate c = ks.getCertificate("simple-cert");
-        	        Log.i("public key", c.getPublicKey().toString());
-        	        Log.i("whole cert", c.toString());
-        	        java.security.cert.Certificate[] cs = ks.getCertificateChain("simple-cert");
-        	        
-        	        Log.i("number of certs", ""+cs.length);
-        	        for(int i = 0; cs != null && i<cs.length; i++) {
-        		        Log.i("public key["+i+"]", c.getPublicKey().toString());
-        		        Log.i("whole cert["+i+"]", c.toString());
-        		        Log.i("type["+i+"]", c.getType());
-        	        }
+	        SSLServerSocketFactory ssf = sc.getServerSocketFactory();
+	        SSLServerSocket s = (SSLServerSocket) ssf.createServerSocket(portNum);
+	        
+	        java.security.cert.Certificate c = ks.getCertificate("simple-cert");
+	        Log.i("public key", c.getPublicKey().toString());
+	        Log.i("whole cert", c.toString());
+	        java.security.cert.Certificate[] cs = ks.getCertificateChain("simple-cert");
+	        
+	        Log.i("number of certs", ""+cs.length);
+	        for(int i = 0; cs != null && i<cs.length; i++) {
+		        Log.i("public key["+i+"]", c.getPublicKey().toString());
+		        Log.i("whole cert["+i+"]", c.toString());
+		        Log.i("type["+i+"]", c.getType());
+	        }
 
-        	        serverSock = s;
+	        serverSock = s;
         			start(s);
 		}
 		catch(Exception e) {
