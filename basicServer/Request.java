@@ -99,9 +99,16 @@ public class Request{
 		return headers.get(0);
 		
 	}
+	/**
+	 * read the request body
+	 * @return
+	 * @deprecated use {@link #getRequestBody()} instead
+	 */
+	@Deprecated
 	public String getData(){
 		return data;
 	}
+	public String getRequestBody() { return getData(); }
 	public NameValuePairList getFormData() throws IOException {
 		String contentType = getHeaderByName("Content-Type");
 		if(contentType == null) {

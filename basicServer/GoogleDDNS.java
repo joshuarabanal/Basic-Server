@@ -20,7 +20,9 @@ public class GoogleDDNS implements Runnable{
 	private String publicIpAddress = null;
 	private String base64EncodedAuthorization;
 	private URL url;
+	private String hostname;
 	public GoogleDDNS(String username, String password, String hostName) throws Exception{
+		this.hostname = hostName;
 		base64EncodedAuthorization = "Basic "+Base64.getEncoder().encodeToString((username+":"+password) .getBytes());
 		url = new URL("https://domains.google.com/nic/update?hostname="+hostName);
 		publicIpAddress = getIpAddress();
@@ -73,10 +75,10 @@ public class GoogleDDNS implements Runnable{
 		int code = conn.getResponseCode();
 		   InputStream in = conn.getInputStream();
 		   int howmany = -1;
-		   byte[] bytes = new byte[100];
+		   byte[] bytes = new byte[1000];
 		   howmany = in.read(bytes);
 		   in.close();
-		   return new String(bytes,0,howmany)+", response code:"+code;
+		   return hostname+":"+new String(bytes,0,howmany)+", response code:"+code;
 		
 	}
 	/**

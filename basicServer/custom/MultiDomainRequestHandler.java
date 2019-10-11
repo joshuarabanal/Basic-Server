@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import android.util.Log;
+import basicServer.HttpHelpers;
 import basicServer.ProcessRequest;
 import basicServer.Request;
 import basicServer.Preprocessor.GZipFIles;
@@ -31,11 +32,9 @@ public class MultiDomainRequestHandler implements ProcessRequest {
 				return requestHandlers.get(i).getProcessRequest().processRequest(r);
 			}
 		}
-		String possible  = "";
-		for(Domain d: requestHandlers) { possible+=","+d; }
-		Log.e("available domains", possible);
-		Log.i("looking for domain", Host);
-		throw new IndexOutOfBoundsException("invalid domain:"+Host);
+		Log.i("invalid domain",Host);
+		//HttpHelpers.httpBadRequest(r);
+		return-1;
 	}
 
 	@Override
