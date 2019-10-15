@@ -186,8 +186,13 @@ public class Request{
 		String[] querys = query.split("&");
 		for(String s : querys) {
 			if(s.contains("=")) {
-				String[] nvp = s.split("=");
-				retu.add(nvp[0],nvp[1]);
+				int index = s.indexOf("=");
+				retu.add(
+						s.substring(0,index),
+						s.substring(index+1)
+						);
+				//String[] nvp = s.split("=");
+				//retu.add(nvp[0],nvp[1]);
 			}
 			else {
 				retu.add(s,null);
